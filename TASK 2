@@ -1,0 +1,232 @@
+HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blogging Platform</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Blogging Platform</h1>
+        <nav>
+            <a href="signup.html">Sign Up</a>
+            <a href="login.html">Log In</a>
+        </nav>
+    </header>
+    <main>
+        <section id="posts">
+            <!-- Blog posts will be dynamically inserted here -->
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Sign Up</h1>
+    </header>
+    <main>
+        <form id="signup-form">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit">Sign Up</button>
+        </form>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Log In</h1>
+    </header>
+    <main>
+        <form id="login-form">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit">Log In</button>
+        </form>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Post</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>New Post</h1>
+    </header>
+    <main>
+        <form id="post-form">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" required>
+            <label for="content">Content:</label>
+            <textarea id="content" name="content" required></textarea>
+            <button type="submit">Post</button>
+        </form>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    width: 100%;
+    padding: 1rem 0;
+    text-align: center;
+}
+
+nav a {
+    color: #fff;
+    margin: 0 1rem;
+    text-decoration: none;
+}
+
+main {
+    max-width: 800px;
+    width: 100%;
+    padding: 2rem;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label, input, textarea, button {
+    margin-bottom: 1rem;
+    width: 100%;
+}
+
+
+button {
+    padding: 0.5rem;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #555;
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const postsContainer = document.getElementById('posts');
+    
+    const posts = [
+        { id: 1, title: 'First Post', content: 'This is the first post.' },
+        { id: 2, title: 'Second Post', content: 'This is the second post.' }
+    ];
+    
+    function renderPosts() {
+        postsContainer.innerHTML = '';
+        posts.forEach(post => {
+            const postElement = document.createElement('div');
+            postElement.className = 'post';
+            postElement.innerHTML = `
+                <h2>${post.title}</h2>
+                <p>${post.content}</p>
+                <button onclick="editPost(${post.id})">Edit</button>
+                <button onclick="deletePost(${post.id})">Delete</button>
+            `;
+            postsContainer.appendChild(postElement);
+        });
+    }
+    
+    function editPost(id) {
+        const post = posts.find(post => post.id === id);
+        const title = prompt('Edit title:', post.title);
+        const content = prompt('Edit content:', post.content);
+        if (title && content) {
+            post.title = title;
+            post.content = content;
+            renderPosts();
+        }
+    }
+    
+    function deletePost(id) {
+        const postIndex = posts.findIndex(post => post.id === id);
+        if (postIndex !== -1) {
+            posts.splice(postIndex, 1);
+            renderPosts();
+        }
+    }
+    
+    renderPosts();
+    
+    const signupForm = document.getElementById('signup-form');
+    if (signupForm) {
+        signupForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = signupForm.username.value;
+            const password = signupForm.password.value;
+            console.log('Sign Up:', { username, password });
+            // Implement user registration logic here
+        });
+    }
+    
+    const loginForm = document.getElementById('login-form');
+    if (loginForm) {
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = loginForm.username.value;
+            const password = loginForm.password.value;
+            console.log('Log In:', { username, password });
+            // Implement user authentication logic here
+        });
+    }
+    
+    const postForm = document.getElementById('post-form');
+    if (postForm) {
+        postForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const title = postForm.title.value;
+            const content = postForm.content.value;
+            const newPost = { id: posts.length + 1, title, content };
+            posts.push(newPost);
+            renderPosts();
+        });
+    }
+});
